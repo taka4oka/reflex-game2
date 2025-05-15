@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>反射神経ゲーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    #box {
+      width: 300px;
+      height: 300px;
+      margin: 30px auto;
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      border-radius: 20px;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>反射神経テスト</h1>
+  <div id="box">スタートを押してね！</div>
+  <button onclick="startGame()">スタート</button>
+  <p id="result"></p>
+
+  <script>
+    let startTime, timeoutID;
+
+    function startGame() {
+      document.getElementById("result").textContent = "";
+      const box = document.getElementById("box");
+      box.style.backgroundColor = "red";
+      box.textContent = "緑になったらタップ！";
+
+      const delay = Math.random() * 3000 + 2000;
+      timeoutID = setTimeout(() => {
+        box.style.backgroundColor = "green";
+        box.textContent = "今だ！";
+        startTime = Date.now();
+        box.onclick = stopGame;
+      }, delay);
+
+      box.onclick = () => {
+        clearTimeout(timeoutID);
+        box.textContent = "早すぎ！もう一回！";
+        box.style.backgroundColor = "gray";
+        box.onclick = null;
+      };
+    }
+
+    function stopGame() {
+      const reactionTime = Date.now() - startTime;
+      document.getElementById("result").textContent = `反応速度：${reactionTime} ms`;
+      const box = document.getElementById("box");
+      box.style.backgroundColor = "gray";
+      box.textContent = "スタートを押してね！";
+      box.onclick = null;
+    }
+  </script>
+</body>
+</html>
